@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Leonela Zakharova – Programmiererin in Ausbildung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2a0a22;--hot:#ff1493;--gold:#ffd86b;--pale:#ffd6ee;font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:#ff1493;color:#fff;font-size:clamp(1rem,.95rem + .3vw,1.15rem);line-height:1.6;overflow:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:8px}
+
+/* status bar */
+.status{position:fixed;top:0;left:0;right:0;z-index:9;display:flex;justify-content:center;align-items:center;gap:.6rem;padding:calc(env(safe-area-inset-top,0px) + .45rem) 1rem .45rem;background:var(--ink);color:var(--pale);font-weight:700;font-size:.85rem;text-align:center;line-height:1.3}
+.dot{width:.6rem;height:.6rem;border-radius:50%;background:#3ddc84;flex:none}
+
+/* navigation (always visible): sidebar on desktop, bottom bar on mobile */
+header{--line:var(--pale);position:fixed;top:calc(env(safe-area-inset-top,0px) + 40px);right:0;bottom:0;z-index:8;width:270px;display:flex;flex-direction:column;overflow-y:auto;padding:24px 24px calc(env(safe-area-inset-bottom,0px) + 24px);background:linear-gradient(175deg,#3a0d2e,#1a0a14);color:var(--pale);border-left:1.5px solid var(--pale)}
+.menu-top{margin-bottom:1.6rem}
+.menu-title{font-weight:900;font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+nav{display:flex;flex-direction:column}
+nav a{display:block;text-decoration:none;font-weight:800;font-size:.85rem;letter-spacing:.09em;text-transform:uppercase;color:var(--pale);padding:.7rem .3rem .7rem 1.2rem;border-top:1px solid rgba(255,214,238,.3);transition:color .2s,padding .25s}
+nav a:hover{color:var(--gold);padding-left:1.6rem}
+nav a[aria-current=page]{color:#ff5fb0}
+nav a[aria-current=page] span::before{content:"✦ ";color:var(--gold)}
+.lang{display:block;width:100%;text-align:left;font:inherit;font-weight:800;font-size:.85rem;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;color:var(--pale);background:none;border:0;border-top:1px solid rgba(255,214,238,.3);border-bottom:1px solid rgba(255,214,238,.3);padding:.7rem .3rem .7rem 1.2rem}
+.lang::before{content:"🌐  "}
+.lang:hover{color:var(--gold)}
+header .cv{margin-top:1.2rem;justify-content:center;width:100%}
+
+/* views */
+.view{--line:var(--ink);position:fixed;inset:0;overflow-y:auto;display:none;background:var(--bg);color:var(--fg);
+padding:calc(env(safe-area-inset-top,0px) + 84px) clamp(20px,7vw,110px) calc(env(safe-area-inset-bottom,0px) + 96px)}
+.view.dark{--line:var(--pale)}
+.view.on{display:block}
+.view>div{max-width:1040px;margin:0 auto}
+.view.on .rise>*{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+.view.on .rise>*:nth-child(2){animation-delay:.08s}.view.on .rise>*:nth-child(3){animation-delay:.16s}
+.view.on .rise>*:nth-child(4){animation-delay:.24s}.view.on .rise>*:nth-child(5){animation-delay:.32s}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+h1,h2{margin:0;font-family:Pacifico,cursive;font-weight:400;line-height:1.05}
+h1{font-size:clamp(3.4rem,15vw,9rem);color:#fff;text-shadow:0 3px 0 #c2007a,0 6px 0 #8a0049,0 12px 22px rgba(60,0,40,.35)}
+h1 small{display:block;font-size:.66em;margin-left:.6em}
+h2{font-size:clamp(2.4rem,8vw,5rem);margin-bottom:1.2rem;text-shadow:0 3px 0 rgba(255,255,255,.7)}
+.dark h2{text-shadow:0 3px 0 #ff1493}
+h3{margin:0 0 .6rem;font-size:1.12rem;font-weight:900}
+p{margin:0 0 1.1em;max-width:62ch}
+.lead{font-size:clamp(1.2rem,1rem + 1.2vw,1.9rem);line-height:1.3;max-width:28ch;margin-top:1.4rem;font-weight:700}
+
+/* bento cards, buttons, chips */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1.1rem;margin-top:1rem}
+.cols.wide{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.card{display:flex;flex-direction:column;background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:18px;padding:1.2rem 1.3rem;box-shadow:3px 3px 0 var(--line);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--line)}
+.card p{margin:0 0 .7rem}
+.card .pl{font-size:.95rem;margin:0 0 .5rem}
+.card .btns{margin-top:auto;padding-top:.9rem}
+.tag{align-self:flex-start;font-size:.8rem;font-weight:800;border:1.5px solid var(--ink);border-radius:8px;padding:.05rem .6rem;background:var(--gold);margin-bottom:.6rem}
+.chips{list-style:none;margin:0 0 .7rem;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.chips li{padding:.2rem .7rem;border:1.5px solid var(--ink);border-radius:10px;background:#ffe3f3;color:var(--ink);font-weight:800;font-size:.88rem}
+
+.btns{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.8rem}
+.btn{display:inline-flex;align-items:center;cursor:pointer;font:inherit;font-weight:800;font-size:.95rem;text-decoration:none;padding:.6rem 1.1rem;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink);box-shadow:3px 3px 0 var(--line);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--line)}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--line)}
+.btn.pri{background:var(--gold)}
+.next{margin-top:2rem}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem;word-break:break-all}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:10;transform:translate(-50%,16px);opacity:0;pointer-events:none;background:var(--ink);color:var(--pale);border:1.5px solid var(--pale);border-radius:12px;padding:.6rem 1.1rem;font-weight:800;transition:opacity .25s,transform .25s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.wipe{position:fixed;inset:0;z-index:4;pointer-events:none}
+.wipe[hidden]{display:none}
+.sp{position:fixed;z-index:11;pointer-events:none;font-size:16px;line-height:1;color:#ffd86b;text-shadow:0 0 6px #fff}
+
+.chips li.hl{background:var(--gold)}
+.card.feat{grid-column:1/-1}
+.gh-ico{display:inline-flex;margin-right:.45rem}
+.gh-ico svg{display:block}
+header .quick{display:flex;gap:.5rem;margin-top:.8rem}
+.mini{padding:.4rem .7rem;font-size:.85rem;flex:1;justify-content:center}
+header .cv{white-space:normal;text-align:center}
+.paper{max-width:860px;background:#fff;color:var(--ink);border:1.5px solid var(--ink);border-radius:18px;box-shadow:4px 4px 0 var(--ink);padding:clamp(1.2rem,4vw,2.4rem)}
+.paper h2{font-size:clamp(2rem,6vw,3.2rem);margin:0;color:var(--hot);text-shadow:none}
+.paper .role{font-weight:800;margin:.2rem 0 .6rem}
+.cvc{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;margin:0 0 1rem;font-weight:700}
+.cvr{display:grid;grid-template-columns:150px 1fr;gap:.4rem 1.2rem;padding:.9rem 0;border-top:1px solid #f2b8da}
+.cvr>h3{color:var(--hot);margin:0}
+.cvr p{margin:0 0 .6rem;max-width:none}
+.cvr p:last-child{margin-bottom:0}
+.sub{display:block;font-size:.92rem;opacity:.85}
+.pj{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;padding:.5rem 0;border-bottom:1px solid #f2b8da}
+.pj:last-child{border:0}
+.pj .chips{margin:.3rem 0 0}
+.pj .btn{padding:.35rem .8rem;font-size:.85rem}
+@media (max-width:600px){.cvr{grid-template-columns:1fr}}
+@media print{
+@page{size:A4;margin:14mm}
+html,body{height:auto;overflow:visible;background:#fff!important}
+.status,header,.toast,.wipe,.sp,.noprint{display:none!important}
+.view{display:none!important}
+#lebenslauf{display:block!important;position:static;overflow:visible;background:#fff!important;color:#2a0a22;padding:0}
+.rise>*{animation:none!important}
+.paper{border:0;box-shadow:none;padding:0;max-width:none}
+.cvr,.pj{break-inside:avoid}
+.chips li{background:#fff}
+.chips li.hl{background:#ffd86b}
+}
+@media (min-width:900px){.view{padding-right:310px}}
+@media (max-width:899px){
+header{top:auto;left:0;width:auto;flex-direction:row;align-items:center;gap:.4rem;overflow-x:auto;overflow-y:hidden;padding:10px 12px calc(env(safe-area-inset-bottom,0px) + 10px);border-left:0;border-top:1.5px solid var(--pale)}
+.menu-top{display:none}
+nav{flex-direction:row;gap:.35rem}
+nav a,.lang{width:auto;white-space:nowrap;padding:.55rem .95rem;border:0;border-radius:99px;background:rgba(255,214,238,.12)}
+nav a:hover{padding-left:.95rem}
+header .cv{margin:0;width:auto;white-space:nowrap;flex:none}
+header .quick{margin:0;flex:none}header .mini{flex:none}
+.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
+}
+@media (max-width:700px){h1{font-size:clamp(3rem,13.5vw,5rem)}}
+@media (prefers-reduced-motion:reduce){.view.on .rise>*{animation:none}.card,.btn,.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="status"><span class="dot" aria-hidden="true"></span><span>Offen für Praktikum, Werkstudentenstelle und Junior-Rollen</span></div>
+
+<header id="top">
+  <div class="menu-top"><span class="menu-title">Leonela Zakharova</span></div>
+  <nav aria-label="Hauptnavigation">
+    <a href="#start" data-go><span>Start</span></a>
+    <a href="#lebenslauf" data-go><span>Lebenslauf</span></a>
+    <a href="#ueber" data-go><span>Über mich</span></a>
+    <a href="#skills" data-go><span>Skills</span></a>
+    <a href="#projekte" data-go><span>Projekte</span></a>
+    <a href="#bildung" data-go><span>Bildung</span></a>
+    <a href="#ziel" data-go><span>Verfügbar</span></a>
+    <a href="#kontakt" data-go><span>Kontakt</span></a>
+  </nav>
+  <button class="lang" type="button" aria-label="Switch to English">EN</button>
+  <button class="btn pri cv" type="button" data-print>Lebenslauf als PDF</button>
+  <div class="quick"><button class="btn mini" type="button" data-copy aria-label="E-Mail kopieren">✉ E-Mail</button><button class="btn mini" type="button" data-link="github"><span class="gh-ico"></span>GitHub</button></div>
+</header>
+
+<main>
+<section class="view on" id="start" data-bg="linear-gradient(160deg,#ff6fb8,#ff1493 55%,#c2007a)" data-fg="#ffffff" aria-label="Start">
+  <div class="rise">
+    <h1 tabindex="-1">Leonela<small>Zakharova</small></h1>
+    <p class="lead">Nachwuchsentwicklerin mit Fokus auf moderne Softwareentwicklung und Agentic Engineering.</p>
+    <div class="btns">
+      <a class="btn pri" href="#lebenslauf" data-go>Lebenslauf ansehen</a>
+      <a class="btn" href="#projekte" data-go>Projekte ansehen</a>
+      <a class="btn" href="#kontakt" data-go>Kontakt aufnehmen</a>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="lebenslauf" data-bg="linear-gradient(170deg,#fff5fb,#ffd6ee)" data-fg="#2a0a22" aria-label="Lebenslauf">
+  <div class="rise">
+    <div class="paper">
+      <h2 tabindex="-1">Leonela Zakharova</h2>
+      <p class="role">Nachwuchsentwicklerin im IT-Bereich</p>
+      <div class="cvc"><a href="mailto:leonelastudentgoit@gmail.com" data-email data-mail></a><a href="https://github.com/leonelaZakharova" target="_blank" rel="noopener">github.com/leonelaZakharova</a></div>
+      <div class="btns noprint" style="margin:0 0 1rem"><button class="btn pri" type="button" data-print>Lebenslauf als PDF drucken / speichern</button><button class="btn" type="button" data-copy>E-Mail kopieren</button></div>
+      <div class="cvr"><h3>Profil</h3><div><p>Ich bin motivierte Nachwuchsentwicklerin im IT-Bereich mit Fokus auf moderne Softwareentwicklung und Agentic Engineering. Ich suche nach spannenden Projekten, Praktika oder Einstiegspositionen (Junior / Working Student), bei denen ich meine technischen Fähigkeiten einbringen, im Team lernen und an innovativen digitalen Produkten mitarbeiten kann. Ich bin flexibel bezüglich des Fachbereichs und offen für verschiedene Jobangebote.</p></div></div>
+      <div class="cvr"><h3>Kenntnisse</h3><div><ul class="chips"><li class="hl">Agentic Engineering</li><li>AI-Assisted Development</li><li>Prompt Engineering</li><li>Python</li><li>C#</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>SQL</li><li>Git</li><li>GitHub</li><li>Visual Studio Code</li><li>PostgreSQL / MySQL</li><li>Docker (Grundlagen)</li><li>Figma</li><li>Jira</li><li>Trello</li><li>Miro</li></ul></div></div>
+      <div class="cvr"><h3>Ausbildung und IT-Weiterbildung</h3><div>
+        <p><b>Computer Academy ШАГ (IT STEP Academy)</b><span class="sub">IT-Ausbildung / Softwareentwicklung mit Fokus auf Praxis und Projekte, ca. 2,5 Jahre, Diplom der Akademie (laufend)</span></p>
+        <p><b>KI-Integration und KI-Agenten (Kurs)</b><span class="sub">laufend</span></p>
+        <p><b>Cisco-Diplom</b></p>
+        <p><b>JavaScript-Zertifikat (Coddy)</b><span class="sub">Abschluss in Kürze</span></p>
+        <!-- ✏️ Hier Schule / Hochschule mit Name und Ort ergänzen -->
+        <p><b>Gymnasium</b><span class="sub">laufend</span></p>
+      </div></div>
+      <div class="cvr"><h3>Projekte und Portfolio</h3><div>
+        <div class="pj"><div><b>KI-Agent mit LLM-Integration</b><span class="sub">Python-Agent, der Aufgaben per LLM-API Schritt für Schritt löst.</span><ul class="chips"><li>Python</li><li>OpenAI API</li><li>Git</li></ul></div><button class="btn" type="button" data-link="p1code"><span class="gh-ico"></span>GitHub Code</button></div>
+        <div class="pj"><div><b>Fullstack-Webanwendung</b><span class="sub">Web-App mit Frontend, REST API und MySQL-Datenbank.</span><ul class="chips"><li>JavaScript</li><li>Python</li><li>MySQL</li></ul></div><button class="btn" type="button" data-link="p2code"><span class="gh-ico"></span>GitHub Code</button></div>
+        <div class="pj"><div><b>Dieses Portfolio</b><span class="sub">Zweisprachiges, responsives Portfolio ohne Framework.</span><ul class="chips"><li>HTML5</li><li>CSS3</li><li>JavaScript</li></ul></div><button class="btn" type="button" data-link="p3code"><span class="gh-ico"></span>GitHub Code</button></div>
+      </div></div>
+      <div class="cvr"><h3>Soft Skills und Arbeitsweise</h3><div><ul class="chips"><li>Teamarbeit (Scrum / Agile Grundlagen)</li><li>Schnelle Auffassungsgabe</li><li>Selbstständiges Lernen</li><li>Strukturiertes Arbeiten</li></ul></div></div>
+      <div class="cvr"><h3>Sprachen</h3><div><ul class="chips"><li>Deutsch B2</li><li>Russisch C1</li><li>Ukrainisch C2</li><li>Englisch B1 (technisch, Dokumentation lesen)</li><li>Armenisch A1</li></ul></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="ueber" data-bg="linear-gradient(170deg,#ffe3f3,#ffb3de)" data-fg="#2a0a22" aria-label="Über mich">
+  <div class="rise">
+    <h2 tabindex="-1">Über mich</h2>
+    <p>Ich begeistere mich für IT, neue Technologien und digitale Lösungen. Gerade lerne ich an einer Computerakademie Programmieren und erweitere Schritt für Schritt mein Wissen in der Softwareentwicklung.</p>
+    <p>Ich mag Technik und Kreativität gleichermaßen: Ein Produkt soll gut funktionieren und gut aussehen. Ich bin neugierig, lerne schnell und stürze mich gern in neue Themen.</p>
+    <a class="btn pri next" href="#skills" data-go>Weiter zu Skills</a>
+  </div>
+</section>
+
+<section class="view" id="skills" data-bg="linear-gradient(170deg,#efdcff,#c9a0ff)" data-fg="#2a0a22" aria-label="Skills">
+  <div class="rise">
+    <h2 tabindex="-1">Skills</h2>
+    <div class="cols">
+      <div class="card feat"><h3>KI und moderne Workflows</h3>
+        <p>Entwicklung mit KI-Agenten, LLM-Workflows und KI-gestützter Softwareentwicklung.</p>
+        <ul class="chips"><li class="hl">Agentic Engineering</li><li>AI-Assisted Development</li><li>Prompt Engineering</li><li>KI-Agenten</li><li>LLM APIs</li></ul></div>
+      <div class="card"><h3>Programmierung und Web</h3>
+        <ul class="chips"><li>HTML5</li><li>CSS3</li><li>JavaScript (ES6+)</li><li>Python</li><li>C#</li><li>C++</li><li>WordPress</li><li>SQL</li></ul></div>
+      <div class="card"><h3>Frameworks (Grundlagen / Lernphase)</h3>
+        <ul class="chips"><li>Tailwind CSS</li><li>FastAPI (Grundlagen)</li><li>React (Grundlagen)</li></ul></div>
+      <div class="card"><h3>Tools und Datenbanken</h3>
+        <ul class="chips"><li>PostgreSQL / MySQL</li><li>DBeaver</li><li>Docker (Grundlagen)</li><li>Git</li><li>GitHub</li><li>Visual Studio Code</li><li>Visual Studio</li><li>Cisco Networking</li></ul></div>
+      <div class="card"><h3>GameDev und 3D</h3>
+        <ul class="chips"><li>Unity</li><li>Blender</li></ul></div>
+      <div class="card"><h3>Design und Management</h3>
+        <ul class="chips"><li>Figma</li><li>Adobe Illustrator</li><li>Adobe Photoshop</li><li>Jira</li><li>Trello</li><li>Miro</li></ul></div>
+      <div class="card"><h3>Sprachen</h3>
+        <ul class="chips"><li>Deutsch B2</li><li>Englisch B1</li><li>Ukrainisch C2</li><li>Russisch C1</li><li>Armenisch A1</li></ul></div>
+      <div class="card"><h3>Soft Skills</h3>
+        <ul class="chips"><li>Kritisches Denken</li><li>Anpassungsfähigkeit und Flexibilität</li><li>Schnelle Lernfähigkeit</li><li>Asynchrone und schriftliche Kommunikation</li><li>Produktdenken und Proaktivität</li><li>Teamarbeit (Scrum / Agile Grundlagen)</li><li>Selbstständiges Lernen</li><li>Strukturiertes Arbeiten</li></ul></div>
+    </div>
+    <a class="btn pri next" href="#projekte" data-go>Weiter zu Projekte</a>
+  </div>
+</section>
+
+<section class="view" id="projekte" data-bg="linear-gradient(170deg,#d6f5e6,#9fe3c3)" data-fg="#2a0a22" aria-label="Projekte">
+  <div class="rise">
+    <h2 tabindex="-1">Projekte</h2>
+    <div class="cols wide">
+      <article class="card"><h3>KI-Agent mit LLM-Integration</h3>
+        <p>Ein Python-Agent, der Anfragen per LLM-API versteht und Aufgaben Schritt für Schritt abarbeitet.</p>
+        <p class="pl"><b>Problem:</b> Wiederkehrende Aufgaben kosten Zeit und sind von Hand schwer zu organisieren.</p>
+        <p class="pl"><b>Lösung:</b> Der Agent zerlegt Aufgaben, ruft Tools auf und liefert ein überprüfbares Ergebnis.</p>
+        <ul class="chips"><li>Python</li><li>OpenAI API</li><li>Prompt Engineering</li><li>Git</li></ul>
+        <div class="btns"><button class="btn" type="button" data-link="p1code">GitHub Code</button><button class="btn pri" type="button" data-link="p1demo">Live Demo</button></div></article>
+      <article class="card"><h3>Fullstack-Webanwendung</h3>
+        <p>Eine responsive Web-App mit Frontend, REST API und MySQL-Datenbank.</p>
+        <p class="pl"><b>Problem:</b> Daten liegen verstreut in Tabellen und sind schwer zu pflegen.</p>
+        <p class="pl"><b>Lösung:</b> Eine übersichtliche Oberfläche mit Formularen und Suche, gespeichert in MySQL.</p>
+        <ul class="chips"><li>JavaScript</li><li>HTML/CSS</li><li>Python</li><li>REST API</li><li>MySQL</li></ul>
+        <div class="btns"><button class="btn" type="button" data-link="p2code">GitHub Code</button><button class="btn pri" type="button" data-link="p2demo">Live Demo</button></div></article>
+      <article class="card"><h3>Dieses Portfolio</h3>
+        <p>Eine zweisprachige (DE/EN), responsive Portfolio-Seite ohne Framework.</p>
+        <p class="pl"><b>Problem:</b> Recruiter sollen in wenigen Sekunden Skills und Kontakt finden.</p>
+        <p class="pl"><b>Lösung:</b> Klare Navigation, Skill- und Projektübersicht, DE/EN-Umschalter und Kontakt per Klick.</p>
+        <ul class="chips"><li>HTML5</li><li>CSS3</li><li>JavaScript (ES6+)</li><li>Responsive Design</li></ul>
+        <div class="btns"><button class="btn" type="button" data-link="p3code">GitHub Code</button><button class="btn pri" type="button" data-link="p3demo">Live Demo</button></div></article>
+    </div>
+    <p style="margin-top:1.4rem;font-size:.9rem;opacity:.8">Beispielprojekte: Texte und Links durch eigene ersetzen.</p>
+    <a class="btn pri next" href="#bildung" data-go>Weiter zu Bildung</a>
+  </div>
+</section>
+
+<section class="view" id="bildung" data-bg="linear-gradient(170deg,#fff4cf,#ffd86b)" data-fg="#2a0a22" aria-label="Bildung">
+  <div class="rise">
+    <h2 tabindex="-1">Bildung</h2>
+    <div class="cols">
+      <div class="card"><span class="tag">läuft</span><h3>Gymnasium</h3>
+        <p>Ich besuche derzeit ein Gymnasium.</p></div>
+      <div class="card"><span class="tag">läuft</span><h3>Computer Academy ШАГ (IT STEP Academy)</h3>
+        <p>IT-Ausbildung zur Programmiererin / Softwareentwicklung mit Fokus auf Praxis und Projekte, Programmdauer ca. 2,5 Jahre. Abschluss mit Diplom der Akademie.</p></div>
+      <div class="card"><span class="tag">aktueller Kurs</span><h3>KI-Integration und KI-Agenten</h3>
+        <p>Ich lerne, KI in die tägliche Arbeit einzubinden und eigene KI-Agenten zu entwickeln.</p></div>
+      <div class="card"><span class="tag">Abschluss</span><h3>Cisco-Diplom</h3>
+        <p>Diplom von Cisco.</p></div>
+      <div class="card"><span class="tag">läuft</span><h3>JavaScript-Zertifikat</h3>
+        <p>Coddy, Abschluss in Kürze.</p></div>
+    </div>
+    <a class="btn pri next" href="#ziel" data-go>Weiter zu Verfügbarkeit</a>
+  </div>
+</section>
+
+<section class="view" id="ziel" data-bg="linear-gradient(170deg,#ff9fd2,#ff4fa6)" data-fg="#2a0a22" aria-label="Verfügbarkeit">
+  <div class="rise">
+    <h2 tabindex="-1">Verfügbar!</h2>
+    <div class="cols">
+      <div class="card"><h3>Ab sofort</h3><p>Ich kann direkt starten.</p></div>
+      <div class="card"><h3>Meine ganze freie Zeit</h3><p>Ich investiere alle Stunden, die ich neben der Ausbildung habe.</p></div>
+      <div class="card"><h3>Remote oder Büro</h3><p>Beides ist für mich kein Problem.</p></div>
+    </div>
+    <p style="margin-top:2rem">Ich bin motivierte Nachwuchsentwicklerin im IT-Bereich mit Fokus auf moderne Softwareentwicklung und Agentic Engineering. Ich suche nach spannenden Projekten, Praktika oder Einstiegspositionen (Junior / Working Student), bei denen ich meine technischen Fähigkeiten einbringen, im Team lernen und an innovativen digitalen Produkten mitarbeiten kann. Ich bin flexibel bezüglich des Fachbereichs und offen für verschiedene Jobangebote.</p>
+    <a class="btn pri next" href="#kontakt" data-go>Los geht’s: Kontakt</a>
+  </div>
+</section>
+
+<section class="view dark" id="kontakt" data-bg="linear-gradient(170deg,#3a0d2e,#1a0a14)" data-fg="#ffd6ee" aria-label="Kontakt">
+  <div class="rise">
+    <h2 tabindex="-1">Kontakt</h2>
+    <p>Du hast ein Projekt, bei dem ich mitmachen kann? Schreib mir!</p>
+    <div class="cols">
+      <div class="card"><h3>E-Mail</h3><p class="mono" data-email></p><div class="btns"><button class="btn pri" type="button" data-copy>E-Mail kopieren</button><a class="btn" data-mail href="mailto:leonelastudentgoit@gmail.com">E-Mail schreiben</a></div></div>
+      <div class="card"><h3>GitHub</h3><p>Code und Projekte</p><div class="btns"><button class="btn" type="button" data-link="github"><span class="gh-ico"></span>GitHub öffnen</button></div></div>
+      <div class="card"><h3>LinkedIn</h3><p>Berufliches Profil</p><div class="btns"><button class="btn" type="button" data-link="linkedin">LinkedIn öffnen</button></div></div>
+      <div class="card"><h3>Lebenslauf</h3><p>Zum Ausdrucken oder als PDF speichern</p><div class="btns"><button class="btn pri" type="button" data-print>Lebenslauf als PDF drucken / speichern</button></div></div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="wipe" hidden></div>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  /* ✏️ HIER EDITIEREN / EDIT HERE: echte Daten eintragen. Leere Links zeigen eine Hinweis-Meldung. */
+  var CONFIG={
+    email:'leonelastudentgoit@gmail.com',
+    links:{
+      github:'https://github.com/leonelaZakharova',
+      linkedin:'',  // z. B. 'https://www.linkedin.com/in/dein-name'
+      // Projekt-Links: leer = Button öffnet das GitHub-Profil. Beispiel: p1code:'https://github.com/leonelaZakharova/p42_sp'
+      p1code:'',p1demo:'',   // Projekt 1: KI-Agent
+      p2code:'',p2demo:'',   // Projekt 2: Fullstack-App
+      p3code:'',p3demo:''    // Projekt 3: dieses Portfolio
+    }
+  };
+
+  var order=['start','lebenslauf','ueber','skills','projekte','bildung','ziel','kontakt'];
+  var views={};order.forEach(function(id){views[id]=document.getElementById(id)});
+  var links=[].slice.call(document.querySelectorAll('nav a'));
+  var wipe=document.querySelector('.wipe'),toastEl=document.querySelector('.toast');
+  var cur='start',busy=false,pt={x:innerWidth/2,y:innerHeight/2},toastTimer;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- i18n DE -> EN ---------- */
+  var T={
+'Offen für Praktikum, Werkstudentenstelle und Junior-Rollen':'Open to internship, working student and junior roles',
+'Über mich':'About me','Projekte':'Projects','Bildung':'Education','Verfügbar':'Available','Kontakt':'Contact','Hauptnavigation':'Main navigation',
+'Nachwuchsentwicklerin mit Fokus auf moderne Softwareentwicklung und Agentic Engineering.':'Junior developer focusing on modern software development and agentic engineering.',
+'Projekte ansehen':'View projects','Kontakt aufnehmen':'Get in touch','Lebenslauf (PDF)':'Download CV (PDF)',
+'Ich begeistere mich für IT, neue Technologien und digitale Lösungen. Gerade lerne ich an einer Computerakademie Programmieren und erweitere Schritt für Schritt mein Wissen in der Softwareentwicklung.':'I am passionate about IT, new technologies and digital solutions. I am currently learning to program at a computer academy and expanding my software development knowledge step by step.',
+'Ich mag Technik und Kreativität gleichermaßen: Ein Produkt soll gut funktionieren und gut aussehen. Ich bin neugierig, lerne schnell und stürze mich gern in neue Themen.':'I like technology and creativity equally: a product should work well and look good. I am curious, learn fast and love diving into new topics.',
+'Weiter zu Skills':'Next: Skills',
+'Programmierung und Web':'Programming and web','Frameworks (Grundlagen / Lernphase)':'Frameworks (basics / learning)','FastAPI (Grundlagen)':'FastAPI (basics)','React (Grundlagen)':'React (basics)',
+'Datenbanken und DevOps':'Databases and DevOps','KI und Automatisierung':'AI and automation','KI-Agenten':'AI agents','LLM APIs und Prompt Engineering':'LLM APIs and prompt engineering','GameDev und 3D':'Game dev and 3D','Design und Management':'Design and management',
+'Gymnasium':'Gymnasium (secondary school)','Ich besuche derzeit ein Gymnasium.':'I am currently attending a Gymnasium (German secondary school).','JavaScript-Zertifikat':'JavaScript certificate','Coddy, Abschluss in Kürze.':'Coddy, completing soon.',
+'Sprachen':'Languages','Deutsch B2':'German B2','Englisch B1':'English B1','Ukrainisch C2':'Ukrainian C2','Russisch C1':'Russian C1','Armenisch A1':'Armenian A1',
+'Kritisches Denken':'Critical thinking','Anpassungsfähigkeit und Flexibilität':'Adaptability and flexibility','Schnelle Lernfähigkeit':'Fast learner','Asynchrone und schriftliche Kommunikation':'Asynchronous and written communication','Produktdenken und Proaktivität':'Product thinking and proactivity',
+'Weiter zu Projekte':'Next: Projects',
+'KI-Agent mit LLM-Integration':'AI agent with LLM integration',
+'Ein Python-Agent, der Anfragen per LLM-API versteht und Aufgaben Schritt für Schritt abarbeitet.':'A Python agent that understands requests via an LLM API and works through tasks step by step.',
+'Wiederkehrende Aufgaben kosten Zeit und sind von Hand schwer zu organisieren.':'Recurring tasks cost time and are hard to organise by hand.',
+'Der Agent zerlegt Aufgaben, ruft Tools auf und liefert ein überprüfbares Ergebnis.':'The agent breaks tasks down, calls tools and delivers a verifiable result.',
+'Fullstack-Webanwendung':'Full-stack web application',
+'Eine responsive Web-App mit Frontend, REST API und MySQL-Datenbank.':'A responsive web app with a frontend, a REST API and a MySQL database.',
+'Daten liegen verstreut in Tabellen und sind schwer zu pflegen.':'Data is scattered across spreadsheets and hard to maintain.',
+'Eine übersichtliche Oberfläche mit Formularen und Suche, gespeichert in MySQL.':'A clear interface with forms and search, stored in MySQL.',
+'Dieses Portfolio':'This portfolio',
+'Eine zweisprachige (DE/EN), responsive Portfolio-Seite ohne Framework.':'A bilingual (DE/EN), responsive portfolio page without a framework.',
+'Recruiter sollen in wenigen Sekunden Skills und Kontakt finden.':'Recruiters should find skills and contact details within seconds.',
+'Klare Navigation, Skill- und Projektübersicht, DE/EN-Umschalter und Kontakt per Klick.':'Clear navigation, skill and project overview, DE/EN switch and contact in one click.',
+'Lösung:':'Solution:',
+'Beispielprojekte: Texte und Links durch eigene ersetzen.':'Sample projects: replace texts and links with your own.',
+'Weiter zu Bildung':'Next: Education','läuft':'in progress','Ausbildung zur Programmiererin':'Training as a programmer',
+'IT-Ausbildung zur Programmiererin / Softwareentwicklung mit Fokus auf Praxis und Projekte, Programmdauer ca. 2,5 Jahre. Abschluss mit Diplom der Akademie.':'IT training as a programmer / software development with a focus on practice and projects, programme length about 2.5 years. Completed with the academy’s diploma.',
+'aktueller Kurs':'current course','KI-Integration und KI-Agenten':'AI integration and AI agents',
+'Ich lerne, KI in die tägliche Arbeit einzubinden und eigene KI-Agenten zu entwickeln.':'I am learning to integrate AI into everyday work and to develop my own AI agents.',
+'Abschluss':'qualification','Cisco-Diplom':'Cisco diploma','Diplom von Cisco.':'Diploma from Cisco.','Weiter zu Verfügbarkeit':'Next: Availability',
+'Verfügbar!':'Available!','Ab sofort':'Immediately','Ich kann direkt starten.':'I can start right away.','Meine ganze freie Zeit':'All my free time',
+'Ich investiere alle Stunden, die ich neben der Ausbildung habe.':'I invest every hour I have besides my training.','Remote oder Büro':'Remote or office','Beides ist für mich kein Problem.':'Both work for me.',
+'Ich bin motivierte Nachwuchsentwicklerin im IT-Bereich mit Fokus auf moderne Softwareentwicklung und Agentic Engineering. Ich suche nach spannenden Projekten, Praktika oder Einstiegspositionen (Junior / Working Student), bei denen ich meine technischen Fähigkeiten einbringen, im Team lernen und an innovativen digitalen Produkten mitarbeiten kann. Ich bin flexibel bezüglich des Fachbereichs und offen für verschiedene Jobangebote.':'I am a motivated junior developer in IT with a focus on modern software development and agentic engineering. I am looking for exciting projects, internships or entry-level positions (junior / working student) where I can contribute my technical skills, learn in a team and help build innovative digital products. I am flexible regarding the field and open to various job offers.',
+'Los geht’s: Kontakt':'Let’s go: Contact',
+'Du hast ein Projekt, bei dem ich mitmachen kann? Schreib mir!':'Do you have a project I can join? Write to me!',
+'E-Mail':'Email','E-Mail kopieren':'Copy email','GitHub öffnen':'Open GitHub','LinkedIn öffnen':'Open LinkedIn',
+'Code und Projekte':'Code and projects','Berufliches Profil':'Professional profile','Lebenslauf':'CV','Zum Ausdrucken oder als PDF speichern':'To print or save as PDF',
+'E-Mail kopiert!':'Email copied!','Kopieren nicht möglich':'Copying failed','Link folgt in Kürze':'Link coming soon','Lebenslauf (PDF) folgt in Kürze':'CV (PDF) coming soon',
+'Lebenslauf ansehen':'View CV','Lebenslauf als PDF':'CV as PDF','Lebenslauf als PDF drucken / speichern':'Print / save CV as PDF','E-Mail schreiben':'Write an email','✉ E-Mail':'✉ Email','Drucken nicht möglich: Strg+P nutzen':'Printing unavailable: use Ctrl+P',
+'Nachwuchsentwicklerin im IT-Bereich':'Junior developer in IT','Profil':'Profile','Kenntnisse':'Skills','Ausbildung und IT-Weiterbildung':'Education and IT training','Projekte und Portfolio':'Projects and portfolio','Soft Skills und Arbeitsweise':'Soft skills and working style',
+'IT-Ausbildung / Softwareentwicklung mit Fokus auf Praxis und Projekte, ca. 2,5 Jahre, Diplom der Akademie (laufend)':'IT training / software development with a focus on practice and projects, about 2.5 years, academy diploma (in progress)',
+'KI-Integration und KI-Agenten (Kurs)':'AI integration and AI agents (course)','laufend':'in progress','JavaScript-Zertifikat (Coddy)':'JavaScript certificate (Coddy)','Abschluss in Kürze':'completing soon',
+'Python-Agent, der Aufgaben per LLM-API Schritt für Schritt löst.':'Python agent that solves tasks step by step via an LLM API.','Web-App mit Frontend, REST API und MySQL-Datenbank.':'Web app with a frontend, REST API and MySQL database.','Zweisprachiges, responsives Portfolio ohne Framework.':'Bilingual, responsive portfolio without a framework.',
+'Teamarbeit (Scrum / Agile Grundlagen)':'Teamwork (Scrum / Agile basics)','Schnelle Auffassungsgabe':'Quick grasp','Selbstständiges Lernen':'Self-directed learning','Strukturiertes Arbeiten':'Structured working',
+'Englisch B1 (technisch, Dokumentation lesen)':'English B1 (technical, reading documentation)',
+'KI und moderne Workflows':'AI and modern workflows','Entwicklung mit KI-Agenten, LLM-Workflows und KI-gestützter Softwareentwicklung.':'Development with AI agents, LLM workflows and AI-assisted software engineering.','Tools und Datenbanken':'Tools and databases','Docker (Grundlagen)':'Docker (basics)'
+  };
+  var nodes=[],w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),tn;
+  while((tn=w.nextNode())){var k=tn.nodeValue.trim();if(T[k])nodes.push({n:tn,k:k,de:tn.nodeValue})}
+  var labs=[].slice.call(document.querySelectorAll('[aria-label]')).filter(function(e){return T[e.getAttribute('aria-label')]}).map(function(e){return {e:e,de:e.getAttribute('aria-label')}});
+  var langBtn=document.querySelector('.lang'),lang='de';
+  function setLang(l){
+    lang=l;var en=l==='en';
+    nodes.forEach(function(o){o.n.nodeValue=en?T[o.k]:o.de});
+    labs.forEach(function(o){o.e.setAttribute('aria-label',en?T[o.de]:o.de)});
+    document.documentElement.lang=l;
+    document.title=en?'Leonela Zakharova – Aspiring programmer':'Leonela Zakharova – Programmiererin in Ausbildung';
+    langBtn.textContent=en?'DE':'EN';
+    langBtn.setAttribute('aria-label',en?'Auf Deutsch wechseln':'Switch to English');
+  }
+  langBtn.addEventListener('click',function(){setLang(lang==='de'?'en':'de')});
+
+  /* ---------- toast, copy, external links ---------- */
+  function toast(de){
+    toastEl.textContent=(lang==='en'&&T[de])?T[de]:de;
+    toastEl.classList.add('on');clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){toastEl.classList.remove('on')},2200);
+  }
+  function copyText(txt){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(txt).then(function(){return true},function(){return fallbackCopy(txt)});
+    }
+    return Promise.resolve(fallbackCopy(txt));
+  }
+  function fallbackCopy(txt){
+    try{var t=document.createElement('textarea');t.value=txt;t.setAttribute('readonly','');t.style.cssText='position:fixed;opacity:0';
+      document.body.appendChild(t);t.select();var ok=document.execCommand('copy');t.remove();return ok}catch(e){return false}
+  }
+  [].slice.call(document.querySelectorAll('[data-email]')).forEach(function(el){el.textContent=CONFIG.email});
+  [].slice.call(document.querySelectorAll('[data-mail]')).forEach(function(el){el.href='mailto:'+CONFIG.email});
+  var GH='<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>';
+  [].slice.call(document.querySelectorAll('.gh-ico')).forEach(function(el){el.innerHTML=GH});
+  document.addEventListener('click',function(e){
+    if(e.target.closest('[data-print]')){try{window.print()}catch(err){toast('Drucken nicht möglich: Strg+P nutzen')}return}
+    var c=e.target.closest('[data-copy]');
+    if(c){copyText(CONFIG.email).then(function(ok){toast(ok?'E-Mail kopiert!':'Kopieren nicht möglich')});return}
+    var b=e.target.closest('[data-link]');
+    if(b){
+      var key=b.dataset.link,url=CONFIG.links[key];
+      if(!url&&/code$/.test(key))url=CONFIG.links.github;
+      if(!url){toast('Link folgt in Kürze');return}
+      window.open(url,'_blank','noopener');
+    }
+  });
+
+  /* ---------- page transitions ---------- */
+  function paint(v){v.style.setProperty('--bg',v.dataset.bg);v.style.setProperty('--fg',v.dataset.fg)}
+  function show(id){
+    var v=views[id];paint(v);
+    order.forEach(function(k){views[k].classList.toggle('on',k===id)});
+    document.body.style.background=v.dataset.bg;
+    links.forEach(function(a){a.removeAttribute('aria-current');if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page')});
+    v.scrollTop=0;cur=id;
+    var h=v.querySelector('h1,h2');if(h)h.focus({preventScroll:true});
+  }
+  function go(id){
+    if(order.indexOf(id)<0)id='start';
+    if(id===cur||busy)return;
+    var v=views[id];paint(v);
+    if(reduce||!wipe.animate){show(id);return}
+    busy=true;
+    wipe.style.background=v.dataset.bg;wipe.hidden=false;
+    var a=wipe.animate([
+      {clipPath:'circle(0px at '+pt.x+'px '+pt.y+'px)'},
+      {clipPath:'circle(150vmax at '+pt.x+'px '+pt.y+'px)'}
+    ],{duration:800,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});
+    burst(pt.x,pt.y);
+    a.onfinish=function(){
+      show(id);wipe.hidden=true;a.cancel();busy=false;
+      var want=location.hash.slice(1);if(order.indexOf(want)>=0&&want!==cur)go(want);
+    };
+  }
+  function spark(x,y,big){
+    var s=document.createElement('span');s.className='sp';s.textContent=Math.random()<.5?'✦':'♥';
+    s.style.left=x+'px';s.style.top=y+'px';if(big)s.style.fontSize=(14+Math.random()*16)+'px';
+    s.style.color=s.textContent==='♥'?'#fff':'#ffd86b';
+    document.body.appendChild(s);
+    var dx=(Math.random()-.5)*(big?260:50),dy=big?(Math.random()-.5)*260:20+Math.random()*30;
+    s.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.2)',opacity:0}],
+      {duration:big?900:700,easing:'ease-out'}).onfinish=function(){s.remove()};
+  }
+  function burst(x,y){for(var i=0;i<14;i++)spark(x,y,true)}
+  if(!reduce){var last=0;addEventListener('pointermove',function(e){
+    var t=Date.now();if(t-last<45)return;last=t;spark(e.clientX,e.clientY,false)})}
+
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-go]');if(!a)return;
+    if(e.detail>0){pt={x:e.clientX,y:e.clientY}}
+    else{var r=a.getBoundingClientRect();pt={x:r.left+r.width/2,y:r.top+r.height/2}}
+    if(a.getAttribute('href')==='#'+cur&&location.hash.slice(1)===cur)e.preventDefault();
+  });
+  addEventListener('hashchange',function(){go(location.hash.slice(1))});
+  show(order.indexOf(location.hash.slice(1))>=0?location.hash.slice(1):'start');
+})();
+</script>
+</body>
+</html>
